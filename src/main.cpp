@@ -1,6 +1,7 @@
 // ModFGO-lite zygisk injector
 // 只负责在游戏进程里 dlopen frida-gadget(libmfgo.so), hook 逻辑全在 modfgo.js
 #include <android/log.h>
+#include <android/dlext.h>
 #include <dlfcn.h>
 #include <stdio.h>
 #include <string.h>
@@ -31,7 +32,17 @@ public:
                 char path[256];
                 snprintf(path, sizeof(path),
                          "/data/data/%s/files/modfgo/libmfgo.so", pkg);
-                void *h = dlopen(path, RTLD_NOW | RTLD_GLOBAL);
+
+                android_namespace_t *ns = android_get_exported_namespace("classloader-namespace");
+                if (!ns) {
+                    ns = android_get_exported_namespace("com.aniplex.fategrandorder");
+                }
+
+                android_dlextinfo extinfo = {};
+                extinfo.flags = ANDROID_DLEXT_USE_NAMESPACE;
+                extinfo.library_namespace = ns;
+
+                void *h = android_dlopen_ext(path, RTLD_NOW | RTLD_GLOBAL, &extinfo);
                 if (h) LOGI("gadget loaded: %s", path);
                 else     LOGE("dlopen failed: %s (%s)", path, dlerror());
                 break;
