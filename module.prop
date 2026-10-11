@@ -1,0 +1,6 @@
+id=modfgo_lite
+name=ModFGO-lite
+version=v0.1
+versionCode=1
+author=ModFGO-lite
+description=FGO 战斗加速等增强 (frida-gadget 注入, 功能脚本可热修改). 仅供学习研究, 有封号风险, 后果自负.
