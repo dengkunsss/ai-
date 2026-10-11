@@ -6,9 +6,9 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: nttld/setup-ndk@v1
         id: ndk
@@ -43,7 +43,7 @@ jobs:
           cd out && zip -r9 ../zygisk_ModFGO-lite.zip . && cd ..
           ls -lh zygisk_ModFGO-lite.zip
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: zygisk_ModFGO-lite
           path: zygisk_ModFGO-lite.zip
