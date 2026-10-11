@@ -33,14 +33,9 @@ public:
                 snprintf(path, sizeof(path),
                          "/data/data/%s/files/modfgo/libmfgo.so", pkg);
 
-                android_namespace_t *ns = android_get_exported_namespace("classloader-namespace");
-                if (!ns) {
-                    ns = android_get_exported_namespace("com.aniplex.fategrandorder");
-                }
-
+                // 简化版：直接使用 android_dlopen_ext，不主动指定 namespace
                 android_dlextinfo extinfo = {};
-                extinfo.flags = ANDROID_DLEXT_USE_NAMESPACE;
-                extinfo.library_namespace = ns;
+                extinfo.flags = 0; 
 
                 void *h = android_dlopen_ext(path, RTLD_NOW | RTLD_GLOBAL, &extinfo);
                 if (h) LOGI("gadget loaded: %s", path);
